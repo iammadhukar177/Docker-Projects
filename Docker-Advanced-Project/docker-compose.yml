@@ -1,15 +1,13 @@
-version: '3.9'
+version: '3.8'
 
 services:
   frontend:
     build:
-      context: ./frontend
+      context: ./frontend  # Correct indentation here
     ports:
       - "3000:80"
-      volumes:
-    - ./frontend:/usr/share/nginx/html 
-    depends_on:
-      - backend
+    volumes:
+      - ./frontend:/usr/share/nginx/html
 
   backend:
     build:
@@ -17,10 +15,10 @@ services:
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: db
-      DB_NAME: dockerdb
-      DB_USER: dockeruser
-      DB_PASS: dockerpass
+      - DB_HOST=db
+      - DB_NAME=dockerdb
+      - DB_USER=dockeruser
+      - DB_PASS=dockerpass
     depends_on:
       - db
 
@@ -32,6 +30,8 @@ services:
       POSTGRES_DB: dockerdb
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./backend/init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   postgres_data:
+
